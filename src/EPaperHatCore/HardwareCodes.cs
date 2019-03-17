@@ -4,10 +4,7 @@ using Unosquare.RaspberryIO.Abstractions;
 namespace BetaSoft.EPaperHatCore
 {
     internal static class HardwareCodes
-    {
-        public const int EPD_WIDTH =  176;
-        public const int EPD_HEIGHT = 264;
-        
+    {   
         public const int POWER_ON = 0x04;
         public const int PANEL_SETTING = 0x00;
         public const int PLL_CONTROL = 0x30;

@@ -16,7 +16,6 @@ namespace BetaSoft.EPaperHatCore
         {
             lock(SyncLock)
             {
-                System.Console.WriteLine("after connections lock");
                 ResetPin = Pi.Gpio[RST_PIN];
                 ResetPin.PinMode = GpioPinDriveMode.Output;
 

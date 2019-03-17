@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using BetaSoft.EPaperHatCore.GUI;
 using Unosquare.RaspberryIO;
@@ -8,10 +9,18 @@ namespace BetaSoft.EPaperHatCore
 {
     public class Epaper
     {
-        public Epaper()
+        public Epaper(int screenWidth, int screenHeight)
         {
-
+            if (screenWidth <= 0 || screenHeight <= 0)
+            {
+                throw new InvalidDataException("Width and/or height cannot be less or equal zero");
+            }
+            ScreenWidth = screenWidth;
+            ScreenHeight = screenHeight;
         }
+
+        public int ScreenWidth { get; }
+        public int ScreenHeight { get; }
         public void Initialize()
         {
             Reset();
@@ -140,8 +149,8 @@ namespace BetaSoft.EPaperHatCore
         public void EPD_Clear()
         {    
             int Width, Height;
-            Width = (HardwareCodes.EPD_WIDTH % 8 == 0)? (HardwareCodes.EPD_WIDTH / 8 ): (HardwareCodes.EPD_WIDTH / 8 + 1);
-            Height = HardwareCodes.EPD_HEIGHT;
+            Width = (ScreenWidth % 8 == 0)? (ScreenWidth / 8 ): (ScreenHeight / 8 + 1);
+            Height = ScreenHeight;
 
             SendCommand(HardwareCodes.DATA_START_TRANSMISSION_1);
             for (int j = 0; j < Height; j++) {
@@ -165,9 +174,9 @@ namespace BetaSoft.EPaperHatCore
 
         public void EPD_Display(Screen Imageblack)
         {
-            uint Width, Height;
-            Width = (HardwareCodes.EPD_WIDTH % 8 == 0)? (HardwareCodes.EPD_WIDTH / 8 ): (HardwareCodes.EPD_WIDTH / 8 + 1);
-            Height = HardwareCodes.EPD_HEIGHT;
+            int Width, Height;
+            Width = (ScreenWidth % 8 == 0)? (ScreenWidth/ 8 ): (ScreenHeight / 8 + 1);
+            Height = ScreenHeight;
             
             SendCommand(HardwareCodes.DATA_START_TRANSMISSION_1);
             for (int j = 0; j < Height; j++) {
