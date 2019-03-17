@@ -14,26 +14,25 @@ namespace BetaSoft.EPaperHatCore
         }
         public void Initialize()
         {
-            Console.WriteLine("Initialize");
             Reset();
 
-            SendCommand(Definitions.POWER_ON);
+            SendCommand(HardwareCodes.POWER_ON);
             WaitUntilIdle();
 
-            SendCommand(Definitions.PANEL_SETTING);
+            SendCommand(HardwareCodes.PANEL_SETTING);
             SendData(0xaf);       //KW-BF   KWR-AF    BWROTP 0f
         
-            SendCommand(Definitions.PLL_CONTROL);
+            SendCommand(HardwareCodes.PLL_CONTROL);
             SendData(0x3a);      //3A 100HZ   29 150Hz 39 200HZ    31 171HZ
 
-            SendCommand(Definitions.POWER_SETTING);
+            SendCommand(HardwareCodes.POWER_SETTING);
             SendData(0x03);                  //# VDS_EN, VDG_EN
             SendData(0x00);                 //# VCOM_HV, VGHL_LV[1], VGHL_LV[0]
             SendData(0x2b);                  //# VDH
             SendData(0x2b);                  //# VDL
             SendData(0x09);                  //# VDHR
 
-            SendCommand(Definitions.BOOSTER_SOFT_START);
+            SendCommand(HardwareCodes.BOOSTER_SOFT_START);
             SendData(0x07);
             SendData(0x07);
             SendData(0x17);
@@ -63,43 +62,43 @@ namespace BetaSoft.EPaperHatCore
             SendData(0x73);
             SendData(0x41);
 
-            SendCommand(Definitions.VCM_DC_SETTING_REGISTER);
+            SendCommand(HardwareCodes.VCM_DC_SETTING_REGISTER);
             SendData(0x12);                   
-            SendCommand(Definitions.VCOM_AND_DATA_INTERVAL_SETTING);
+            SendCommand(HardwareCodes.VCOM_AND_DATA_INTERVAL_SETTING);
             SendData(0x87);       //define by OTP
 
             SetLut();
 
-            SendCommand(Definitions.PARTIAL_DISPLAY_REFRESH);
+            SendCommand(HardwareCodes.PARTIAL_DISPLAY_REFRESH);
             SendData(0x00);
         }
 
         private void SetLut()
         {
             int count;     
-            SendCommand(Definitions.LUT_FOR_VCOM);                            //vcom
+            SendCommand(HardwareCodes.LUT_FOR_VCOM);                            //vcom
             for(count = 0; count < 44; count++) {
-                SendData(Definitions.lut_vcom_dc[count]);
+                SendData(HardwareCodes.lut_vcom_dc[count]);
             }
             
-            SendCommand(Definitions.LUT_WHITE_TO_WHITE);                      //ww --
+            SendCommand(HardwareCodes.LUT_WHITE_TO_WHITE);                      //ww --
             for(count = 0; count < 42; count++) {
-                SendData(Definitions.lut_ww[count]);
+                SendData(HardwareCodes.lut_ww[count]);
             }   
             
-            SendCommand(Definitions.LUT_BLACK_TO_WHITE);                      //bw r
+            SendCommand(HardwareCodes.LUT_BLACK_TO_WHITE);                      //bw r
             for(count = 0; count < 42; count++) {
-                SendData(Definitions.lut_bw[count]);
+                SendData(HardwareCodes.lut_bw[count]);
             } 
 
-            SendCommand(Definitions.LUT_WHITE_TO_BLACK);                      //wb w
+            SendCommand(HardwareCodes.LUT_WHITE_TO_BLACK);                      //wb w
             for(count = 0; count < 42; count++) {
-                SendData(Definitions.lut_bb[count]);
+                SendData(HardwareCodes.lut_bb[count]);
             } 
 
-            SendCommand(Definitions.LUT_BLACK_TO_BLACK);                      //bb b
+            SendCommand(HardwareCodes.LUT_BLACK_TO_BLACK);                      //bb b
             for(count = 0; count < 42; count++) {
-                SendData(Definitions.lut_wb[count]);
+                SendData(HardwareCodes.lut_wb[count]);
             } 
         }
 
@@ -141,52 +140,52 @@ namespace BetaSoft.EPaperHatCore
         public void EPD_Clear()
         {    
             int Width, Height;
-            Width = (Definitions.EPD_WIDTH % 8 == 0)? (Definitions.EPD_WIDTH / 8 ): (Definitions.EPD_WIDTH / 8 + 1);
-            Height = Definitions.EPD_HEIGHT;
+            Width = (HardwareCodes.EPD_WIDTH % 8 == 0)? (HardwareCodes.EPD_WIDTH / 8 ): (HardwareCodes.EPD_WIDTH / 8 + 1);
+            Height = HardwareCodes.EPD_HEIGHT;
 
-            SendCommand(Definitions.DATA_START_TRANSMISSION_1);
+            SendCommand(HardwareCodes.DATA_START_TRANSMISSION_1);
             for (int j = 0; j < Height; j++) {
                 for (int i = 0; i < Width; i++) {
                     SendData(0x00);
                 }
             }
-            SendData(Definitions.DATA_STOP);
+            SendData(HardwareCodes.DATA_STOP);
 
-            SendCommand(Definitions.DATA_START_TRANSMISSION_2);
+            SendCommand(HardwareCodes.DATA_START_TRANSMISSION_2);
             for (int j = 0; j < Height; j++) {
                 for (int i = 0; i < Width; i++) {
                     SendData(0x00);
                 }
             }
-            SendData(Definitions.DATA_STOP);
+            SendData(HardwareCodes.DATA_STOP);
             
-            SendCommand(Definitions.DISPLAY_REFRESH);
+            SendCommand(HardwareCodes.DISPLAY_REFRESH);
             WaitUntilIdle();
         }
 
-        public void EPD_Display(Paint Imageblack)
+        public void EPD_Display(Screen Imageblack)
         {
             uint Width, Height;
-            Width = (Definitions.EPD_WIDTH % 8 == 0)? (Definitions.EPD_WIDTH / 8 ): (Definitions.EPD_WIDTH / 8 + 1);
-            Height = Definitions.EPD_HEIGHT;
+            Width = (HardwareCodes.EPD_WIDTH % 8 == 0)? (HardwareCodes.EPD_WIDTH / 8 ): (HardwareCodes.EPD_WIDTH / 8 + 1);
+            Height = HardwareCodes.EPD_HEIGHT;
             
-            SendCommand(Definitions.DATA_START_TRANSMISSION_1);
+            SendCommand(HardwareCodes.DATA_START_TRANSMISSION_1);
             for (int j = 0; j < Height; j++) {
                 for (int i = 0; i < Width; i++) {
                     SendData(~Imageblack.Image[i + j * Width]);
                 }
             }
-            SendData(Definitions.DATA_STOP);
+            SendData(HardwareCodes.DATA_STOP);
             
-            SendCommand(Definitions.DATA_START_TRANSMISSION_2);
+            SendCommand(HardwareCodes.DATA_START_TRANSMISSION_2);
             for (int j = 0; j < Height; j++) {
                 for (int i = 0; i < Width; i++) {
                     SendData(0x00);
                 }
             }
-            SendData(Definitions.DATA_STOP);
+            SendData(HardwareCodes.DATA_STOP);
             
-            SendCommand(Definitions.DISPLAY_REFRESH);
+            SendCommand(HardwareCodes.DISPLAY_REFRESH);
             WaitUntilIdle();
         }
 

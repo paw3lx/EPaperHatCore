@@ -3,7 +3,7 @@ using Unosquare.RaspberryIO.Abstractions;
 
 namespace BetaSoft.EPaperHatCore
 {
-    internal static class Definitions
+    internal static class HardwareCodes
     {
         public const int EPD_WIDTH =  176;
         public const int EPD_HEIGHT = 264;

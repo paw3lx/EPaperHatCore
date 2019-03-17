@@ -17,5 +17,12 @@ namespace BetaSoft.EPaperHatCore.GUI
             ROTATE_180 = 180,
             ROTATE_270 = 270
         }
+
+        public enum Color
+        {
+            WHITE = 0xFF,
+            BLACK = 0x00,
+            RED = Color.BLACK
+        }
     }
 }
