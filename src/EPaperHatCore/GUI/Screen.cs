@@ -1,3 +1,4 @@
+using System;
 using static BetaSoft.EPaperHatCore.GUI.Enums;
 
 namespace BetaSoft.EPaperHatCore.GUI
@@ -117,6 +118,10 @@ namespace BetaSoft.EPaperHatCore.GUI
             {
                 for (uint column = 0; column < font.Width; column++)
                 {
+                    if (charOffset >= font.Table.Length)
+                    {
+                        throw new ArgumentException($"Character '{asciiChar}' is not available in the font");
+                    }
                     char character = font.Table[charOffset];
                     //To determine whether the font background color and screen background color is consistent
                     if (backgroundColor == Color.WHITE)
