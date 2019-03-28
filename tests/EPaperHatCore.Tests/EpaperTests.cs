@@ -15,7 +15,7 @@ namespace Betasoft.EPaperHatCore.Tests
                 new Epaper(0, 0);
             });
 
-            exception.ShouldBeOfType(typeof(InvalidDataException));
+            exception.ShouldBeOfType(typeof(ArgumentException));
         }
     }
 }
