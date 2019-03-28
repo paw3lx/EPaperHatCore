@@ -13,7 +13,7 @@ namespace BetaSoft.EPaperHatCore
         {
             if (screenWidth <= 0 || screenHeight <= 0)
             {
-                throw new InvalidDataException("Width and/or height cannot be less or equal zero");
+                throw new ArgumentException("Width and/or height cannot be less or equal zero");
             }
             ScreenWidth = screenWidth;
             ScreenHeight = screenHeight;
@@ -172,30 +172,33 @@ namespace BetaSoft.EPaperHatCore
             WaitUntilIdle();
         }
 
-        public void EPD_Display(Screen Imageblack)
+        public void DispalScreens(Screen blackScreen, Screen redScreen)
         {
-            int Width, Height;
-            Width = (ScreenWidth % 8 == 0)? (ScreenWidth/ 8 ): (ScreenHeight / 8 + 1);
-            Height = ScreenHeight;
-            
-            SendCommand(HardwareCodes.DATA_START_TRANSMISSION_1);
-            for (int j = 0; j < Height; j++) {
-                for (int i = 0; i < Width; i++) {
-                    SendData(~Imageblack.Image[i + j * Width]);
-                }
-            }
-            SendData(HardwareCodes.DATA_STOP);
-            
-            SendCommand(HardwareCodes.DATA_START_TRANSMISSION_2);
-            for (int j = 0; j < Height; j++) {
-                for (int i = 0; i < Width; i++) {
-                    SendData(0x00);
-                }
-            }
-            SendData(HardwareCodes.DATA_STOP);
+            if (blackScreen?.Image == null)
+                throw new ArgumentNullException(nameof(blackScreen));
+            if (redScreen?.Image == null)
+                throw new ArgumentNullException(nameof(redScreen));
+
+            DispalScreen(blackScreen, HardwareCodes.DATA_START_TRANSMISSION_1);
+            DispalScreen(redScreen, HardwareCodes.DATA_START_TRANSMISSION_2);
             
             SendCommand(HardwareCodes.DISPLAY_REFRESH);
             WaitUntilIdle();
+        }
+
+        private void DispalScreen(Screen screen, int dataTransmissionCode)
+        {
+            int width, height;
+            width = (ScreenWidth % 8 == 0)? (ScreenWidth/ 8 ): (ScreenHeight / 8 + 1);
+            height = ScreenHeight;
+            
+            SendCommand(dataTransmissionCode);
+            for (int j = 0; j < height; j++) {
+                for (int i = 0; i < width; i++) {
+                    SendData(~screen.Image[i + j * width]);
+                }
+            }
+            SendData(HardwareCodes.DATA_STOP);
         }
 
         public void Sleep()
