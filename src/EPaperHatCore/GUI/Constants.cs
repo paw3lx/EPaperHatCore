@@ -1,6 +1,6 @@
 namespace BetaSoft.EPaperHatCore.GUI
 {
-    public static class Constans
+    public static class Constants
     {
         public const uint WHITE = 0xFF;
         public const uint BLACK = 0x00;

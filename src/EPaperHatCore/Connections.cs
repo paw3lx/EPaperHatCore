@@ -1,34 +1,42 @@
+using BetaSoft.EPaperHatCore.IO;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
 
 namespace BetaSoft.EPaperHatCore
 {
-    internal static class Connections
+    internal class Connections
     {
-        public static readonly IGpioPin ResetPin, DcPin, CsPin, BusyPin;
-        private static readonly object SyncLock = new object();
-        private const int RST_PIN = 17;
-        private const int DC_PIN = 25;
-        private const int CS_PIN = 8;
-        private const int BUSY_PIN = 24;
+        private readonly IHardwareSpecification _specification;
+        public IGpioPin ResetPin { get; private set; }
+        public IGpioPin DcPin { get; private set; } 
+        public IGpioPin CsPin { get; private set; }
+        public IGpioPin BusyPin { get; private set; }
+        public ISpiChannel Channel { get; private set; }
+        private static readonly object _syncLock = new object();
 
-        static Connections()
+        public Connections(IHardwareSpecification specification)
         {
-            lock(SyncLock)
+            _specification = specification;
+        }
+
+        public void Initialize()
+        {
+            lock(_syncLock)
             {
-                ResetPin = Pi.Gpio[RST_PIN];
+                ResetPin = Pi.Gpio[_specification.RST_PIN];
                 ResetPin.PinMode = GpioPinDriveMode.Output;
 
-                DcPin = Pi.Gpio[DC_PIN];
+                DcPin = Pi.Gpio[_specification.DC_PIN];
                 DcPin.PinMode = GpioPinDriveMode.Output;
 
-                CsPin = Pi.Gpio[CS_PIN];
+                CsPin = Pi.Gpio[_specification.CS_PIN];
                 CsPin.PinMode = GpioPinDriveMode.Output;
 
-                BusyPin = Pi.Gpio[BUSY_PIN];
+                BusyPin = Pi.Gpio[_specification.BUSY_PIN];
                 BusyPin.PinMode = GpioPinDriveMode.Input;
 
-                Pi.Spi.Channel0Frequency = 2000000;
+                Pi.Spi.Channel0Frequency = _specification.Channel0Frequency;
+                Channel = Pi.Spi.Channel0;
             }
         }
     }

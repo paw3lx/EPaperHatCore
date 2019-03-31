@@ -4,22 +4,36 @@ using Unosquare.RaspberryIO.Abstractions;
 
 namespace BetaSoft.EPaperHatCore.IO
 {
-    public class EPaperConnection : IEpaperConnection
+    internal class EPaperConnection : IEpaperConnection
     {
+        private readonly Connections _connection;
+        private static readonly object _syncLock = new object();
+
+        public EPaperConnection(Connections connection)
+        {
+            _connection = connection;
+        }
+
         public void SendCommand(int command)
         {
-            Connections.DcPin.Write(GpioPinValue.Low);
-            Connections.CsPin.Write(GpioPinValue.Low);
-            Pi.Spi.Channel0.SendReceive(BitConverter.GetBytes(command));
-            Connections.CsPin.Write(GpioPinValue.High);
+            lock(_syncLock)
+            {
+                _connection.DcPin.Write(GpioPinValue.Low);
+                _connection.CsPin.Write(GpioPinValue.Low);
+                _connection.Channel.SendReceive(BitConverter.GetBytes(command));
+                _connection.CsPin.Write(GpioPinValue.High);
+            }
         }
 
         public void SendData(int data)
         {
-            Connections.DcPin.Write(GpioPinValue.High);
-            Connections.CsPin.Write(GpioPinValue.Low);
-            Pi.Spi.Channel0.SendReceive(BitConverter.GetBytes(data));
-            Connections.CsPin.Write(GpioPinValue.High);
+            lock(_syncLock)
+            {
+                _connection.DcPin.Write(GpioPinValue.High);
+                _connection.CsPin.Write(GpioPinValue.Low);
+                _connection.Channel.SendReceive(BitConverter.GetBytes(data));
+                _connection.CsPin.Write(GpioPinValue.High);
+            }
         }
     }
 }
