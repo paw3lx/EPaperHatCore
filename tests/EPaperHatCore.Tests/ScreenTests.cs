@@ -23,7 +23,7 @@ namespace Betasoft.EPaperHatCore.Tests
         }
 
         [Fact]
-        public void Charater_XPosition_Biggen_Than_Width_Throws()
+        public void String_XPosition_Biggen_Than_Width_Throws()
         {
             var screen = new Screen(176, 264, Rotate.ROTATE_270, 0);
 
@@ -35,12 +35,36 @@ namespace Betasoft.EPaperHatCore.Tests
         }
 
         [Fact]
-        public void Charater_YPosition_Biggen_Than_Width_Throws()
+        public void String_YPosition_Biggen_Than_Width_Throws()
         {
             var screen = new Screen(176, 264, Rotate.ROTATE_270, 0);
 
             var exception = Record.Exception(() => {
                 screen.DrawString(0, 1000, "ScreenTest", new Font(), Color.WHITE, Color.BLACK);
+            });
+
+            exception.ShouldBeOfType(typeof(ArgumentOutOfRangeException));
+        }
+
+        [Fact]
+        public void Charater_XPosition_Biggen_Than_Width_Throws()
+        {
+            var screen = new Screen(176, 264, Rotate.ROTATE_270, 0);
+
+            var exception = Record.Exception(() => {
+                screen.DrawCharachter(1000, 10, 'e', new Font(), Color.WHITE, Color.BLACK);
+            });
+
+            exception.ShouldBeOfType(typeof(ArgumentOutOfRangeException));
+        }
+
+        [Fact]
+        public void Charater_YPosition_Biggen_Than_Width_Throws()
+        {
+            var screen = new Screen(176, 264, Rotate.ROTATE_270, 0);
+
+            var exception = Record.Exception(() => {
+                screen.DrawCharachter(0, 1000, 'e', new Font(), Color.WHITE, Color.BLACK);
             });
 
             exception.ShouldBeOfType(typeof(ArgumentOutOfRangeException));

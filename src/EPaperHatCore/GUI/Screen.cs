@@ -107,11 +107,10 @@ namespace BetaSoft.EPaperHatCore.GUI
         public void DrawCharachter(uint xPoint, uint yPoint, char asciiChar,
             Font font, Color backgroundColor, Color foregroundColor)
         {
-            if (xPoint > Width || yPoint > Height)
-            {
-                //TODO: throw exception
-                return;
-            }
+            if (xPoint > Width)
+                throw new ArgumentOutOfRangeException(nameof(xPoint), $"{nameof(xPoint)} cannot be bigger than {nameof(Width)}");
+            if (yPoint > Height)
+                throw new ArgumentOutOfRangeException(nameof(yPoint), $"{nameof(yPoint)} cannot be bigger than {nameof(Height)}");
 
             int charOffset = (int)((asciiChar - ' ') * font.Height * (font.Width / 8 + (font.Width % 8 > 0 ? 1 : 0)));
             for (uint page = 0; page < font.Height; page++)
