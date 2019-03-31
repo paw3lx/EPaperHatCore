@@ -20,7 +20,30 @@ namespace Betasoft.EPaperHatCore.Tests
             });
 
             exception.ShouldBeOfType(typeof(ArgumentException));
-            
+        }
+
+        [Fact]
+        public void Charater_XPosition_Biggen_Than_Width_Throws()
+        {
+            var screen = new Screen(176, 264, Rotate.ROTATE_270, 0);
+
+            var exception = Record.Exception(() => {
+                screen.DrawString(1000, 10, "ScreenTest", new Font(), Color.WHITE, Color.BLACK);
+            });
+
+            exception.ShouldBeOfType(typeof(ArgumentOutOfRangeException));
+        }
+
+        [Fact]
+        public void Charater_YPosition_Biggen_Than_Width_Throws()
+        {
+            var screen = new Screen(176, 264, Rotate.ROTATE_270, 0);
+
+            var exception = Record.Exception(() => {
+                screen.DrawString(0, 1000, "ScreenTest", new Font(), Color.WHITE, Color.BLACK);
+            });
+
+            exception.ShouldBeOfType(typeof(ArgumentOutOfRangeException));
         }
     }
 }

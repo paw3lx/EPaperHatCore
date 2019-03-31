@@ -156,11 +156,10 @@ namespace BetaSoft.EPaperHatCore.GUI
             uint xPoint = xStart;
             uint yPoint = yStart;
 
-            if (xStart > Width || yStart > Height)
-            {
-                //TODO: throw exception
-                return;
-            }
+            if (xStart > Width)
+                throw new ArgumentOutOfRangeException(nameof(xStart), $"{nameof(xStart)} cannot be bigger than {nameof(Width)}");
+            if (yStart > Height)
+                throw new ArgumentOutOfRangeException(nameof(yStart), $"{nameof(yStart)} cannot be bigger than {nameof(Height)}");
 
             foreach (char c in text)
             {
