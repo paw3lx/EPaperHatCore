@@ -69,5 +69,29 @@ namespace Betasoft.EPaperHatCore.Tests
 
             exception.ShouldBeOfType(typeof(ArgumentOutOfRangeException));
         }
+
+        [Fact]
+        public void Pixel_XPosition_Biggen_Than_Width_Throws()
+        {
+            var screen = new Screen(176, 264, Rotate.ROTATE_270, 0);
+
+            var exception = Record.Exception(() => {
+                screen.SetPixel(1000, 10, Color.RED);
+            });
+
+            exception.ShouldBeOfType(typeof(ArgumentOutOfRangeException));
+        }
+
+        [Fact]
+        public void Pixel_YPosition_Biggen_Than_Width_Throws()
+        {
+            var screen = new Screen(176, 264, Rotate.ROTATE_270, 0);
+
+            var exception = Record.Exception(() => {
+                screen.SetPixel(0, 1000, Color.RED);
+            });
+
+            exception.ShouldBeOfType(typeof(ArgumentOutOfRangeException));
+        }
     }
 }

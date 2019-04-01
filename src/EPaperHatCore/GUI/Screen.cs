@@ -44,11 +44,10 @@ namespace BetaSoft.EPaperHatCore.GUI
 
         public void SetPixel(uint xPoint, uint yPoint, Color color)
         {
-            if (xPoint > Width || yPoint > Height)
-            {
-                //TODO: throw exception
-                return;
-            }
+            if (xPoint > Width)
+                throw new ArgumentOutOfRangeException(nameof(xPoint), $"{nameof(xPoint)} cannot be bigger than {nameof(Width)}");
+            if (yPoint > Height)
+                throw new ArgumentOutOfRangeException(nameof(yPoint), $"{nameof(yPoint)} cannot be bigger than {nameof(Height)}");
             uint x = 0, y = 0;
             switch (Rotate)
             {
@@ -86,11 +85,10 @@ namespace BetaSoft.EPaperHatCore.GUI
                     break;
             }
 
-            if (x > _widthMemory || y > _heightMemory)
-            {
-                //TODO: throw exception
-                return;
-            }
+            if (x > _widthMemory)
+                throw new ArgumentOutOfRangeException(nameof(x), $"{nameof(x)} cannot be bigger than width");
+            if (y > _heightMemory)
+                throw new ArgumentOutOfRangeException(nameof(y), $"{nameof(y)} cannot be bigger than height");
 
             int address = (int)(x / 8 + y * _widthByte);
             byte rData = Image[address];
