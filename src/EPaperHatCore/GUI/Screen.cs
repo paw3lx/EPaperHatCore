@@ -5,7 +5,7 @@ namespace BetaSoft.EPaperHatCore.GUI
 {
     public class Screen
     {
-        public Screen(uint width, uint height, Rotate rotate, uint color)
+        public Screen(uint width, uint height, Rotate? rotate = null, Color? color = null)
         {
             var imageSize = ((width % 8 == 0) ? (width / 8) : (width / 8 + 1)) * height;
             Image = new byte[imageSize];
@@ -15,9 +15,8 @@ namespace BetaSoft.EPaperHatCore.GUI
             _widthByte = (width % 8 == 0) ? (width / 8) : (width / 8 + 1);
             _heightByte = height;
 
-            Rotate = rotate;
+            Rotate = rotate ?? Rotate.ROTATE_0;
             Mirror = MirrorImage.MIRROR_NONE;
-            //Color = color;
 
             if (rotate == Rotate.ROTATE_0 || rotate == Rotate.ROTATE_180)
             {
@@ -29,12 +28,16 @@ namespace BetaSoft.EPaperHatCore.GUI
                 Width = height;
                 Height = width;
             }
+
+            if (color.HasValue)
+            {
+                Clear(color.Value);
+            }
         }
 
         public byte[] Image { get; }
         public uint Width { get; }
         public uint Height { get; }
-        //public uint Color { get; }
         public Rotate Rotate { get; }
         public MirrorImage Mirror { get; }
         private readonly uint _widthMemory;
@@ -177,6 +180,40 @@ namespace BetaSoft.EPaperHatCore.GUI
 
                 //The next word of the abscissa increases the font of the broadband
                 xPoint += font.Width;
+            }
+        }
+
+        public void DrawPoint(uint xStart, uint yStart, Color Color, uint dotSize, DotStyle dotStyle)
+        {
+            if (xStart > Width)
+                throw new ArgumentOutOfRangeException(nameof(xStart), $"{nameof(xStart)} cannot be bigger than {nameof(Width)}");
+            if (yStart > Height)
+                throw new ArgumentOutOfRangeException(nameof(yStart), $"{nameof(yStart)} cannot be bigger than {nameof(Height)}");
+
+            if (dotSize <= 0 || dotSize >= 8)
+                throw new ArgumentOutOfRangeException(nameof(dotSize), $"{nameof(yStart)} cannot be less than 0 and bigger than 8");
+
+            if (dotStyle == DotStyle.DOT_FILL_AROUND) 
+            {
+                for (uint xDir = 0; xDir < 2 * dotSize - 1; xDir++)
+                {
+                    for (uint yDir = 0; yDir < 2 * dotSize - 1; yDir++)
+                    {
+                        if(xStart + xDir - dotSize < 0 || yStart + yDir - dotSize < 0)
+                            break;
+                        SetPixel(xStart + xDir - dotSize, yStart + yDir - dotSize, Color);
+                    }
+                }
+            } 
+            else 
+            {
+                for (uint xDir = 0; xDir <  dotSize; xDir++)
+                {
+                    for (uint yDir = 0; yDir <  dotSize; yDir++)
+                    {
+                        SetPixel(xStart + xDir - 1, yStart + yDir - 1, Color);
+                    }
+                }
             }
         }
 

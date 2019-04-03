@@ -24,5 +24,11 @@ namespace BetaSoft.EPaperHatCore.GUI
             BLACK = 0x00,
             RED = Color.BLACK
         }
+
+        public enum DotStyle
+        {
+            DOT_FILL_AROUND,
+            DOT_FILL_RIGHTUP
+        }
     }
 }
