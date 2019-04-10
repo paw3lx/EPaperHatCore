@@ -3,6 +3,9 @@ EPaperHatCore is a dotnet core library for Waveshare e-Paper HAT display
 
 This library provides a simple way to access e-Paper display on the Raspberry Pi.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/nol7v0n0y2hjipl0?svg=true)](https://ci.appveyor.com/project/paw3lx/epaperhatcore)
+
+
 ## Installation
 EPaperHatCore will be available as a package on MyGet soonish.
 
