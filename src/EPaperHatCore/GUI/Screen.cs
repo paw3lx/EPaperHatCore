@@ -5,7 +5,7 @@ namespace BetaSoft.EPaperHatCore.GUI
 {
     public class Screen
     {
-        public Screen(uint width, uint height, Rotate? rotate = null, Color? color = null)
+        public Screen(uint width, uint height, Rotate? rotate = null, Color? backgroundColor = null)
         {
             var imageSize = ((width % 8 == 0) ? (width / 8) : (width / 8 + 1)) * height;
             Image = new byte[imageSize];
@@ -29,9 +29,9 @@ namespace BetaSoft.EPaperHatCore.GUI
                 Height = width;
             }
 
-            if (color.HasValue)
+            if (backgroundColor.HasValue)
             {
-                Clear(color.Value);
+                Clear(backgroundColor.Value);
             }
         }
 
