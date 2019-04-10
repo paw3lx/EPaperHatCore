@@ -30,5 +30,11 @@ namespace BetaSoft.EPaperHatCore.GUI
             DOT_FILL_AROUND,
             DOT_FILL_RIGHTUP
         }
+
+        public enum LineStyle
+        {
+            LINE_STYLE_SOLID,
+            LINE_STYLE_DOTTED
+        }
     }
 }

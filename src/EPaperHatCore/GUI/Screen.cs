@@ -217,6 +217,80 @@ namespace BetaSoft.EPaperHatCore.GUI
             }
         }
 
+        public void DrawLine(uint xStart, uint yStart, uint xEnd, uint yEnd, Color Color, LineStyle lineStyle, uint dotSize)
+        {
+            if (xStart > Width)
+                throw new ArgumentOutOfRangeException(nameof(xStart), $"{nameof(xStart)} cannot be bigger than {nameof(Width)}");
+            if (yStart > Height)
+                throw new ArgumentOutOfRangeException(nameof(yStart), $"{nameof(yStart)} cannot be bigger than {nameof(Height)}");
+            if (xEnd > Width)
+                throw new ArgumentOutOfRangeException(nameof(xEnd), $"{nameof(xEnd)} cannot be bigger than {nameof(Width)}");
+            if (yEnd > Height)
+                throw new ArgumentOutOfRangeException(nameof(yEnd), $"{nameof(yEnd)} cannot be bigger than {nameof(Height)}");
+
+            if (dotSize <= 0 || dotSize >= 8)
+                throw new ArgumentOutOfRangeException(nameof(dotSize), $"{nameof(yStart)} cannot be less than 0 and bigger than 8");
+
+            uint xPoint = xStart;
+            uint yPoint = yStart;
+            int dx = (int)(xEnd - xStart) >= 0 ? (int)(xEnd - xStart) : (int)(xStart - xEnd);
+            int dy = (int)(yEnd - yStart) <= 0 ? (int)(yEnd - yStart) : (int)(yStart - yEnd);
+
+            int xIncrDecr = xStart < xEnd ? 1 : -1;
+            int yIncDecr = yStart < yEnd ? 1 : -1;
+
+            int esp = dx + dy;
+            uint dotLen = 0;
+
+            while(true) {
+                dotLen++;
+
+                if (lineStyle == LineStyle.LINE_STYLE_DOTTED && dotLen % 3 == 0) {
+                    DrawPoint(xPoint, yPoint, Color.WHITE, dotSize, DotStyle.DOT_FILL_AROUND);
+                    dotLen = 0;
+                } else {
+                    DrawPoint(xPoint, yPoint, Color, dotSize, DotStyle.DOT_FILL_AROUND);
+                }
+
+                if (2 * esp >= dy) {
+                    if (xPoint == xEnd)
+                        break;
+                    esp += dy;
+                    xPoint = (uint)(xPoint + xIncrDecr);
+                }
+                if (2 * esp <= dx) {
+                    if (yPoint == yEnd)
+                        break;
+                    esp += dx;
+                    yPoint = (uint)(yPoint + yIncDecr);
+                }
+            }
+        }
+
+        public void DrawRectangle(uint xStart, uint yStart, uint xEnd, uint yEnd, Color color, bool filled, uint dotSize)
+        {
+            if (xStart > Width)
+                throw new ArgumentOutOfRangeException(nameof(xStart), $"{nameof(xStart)} cannot be bigger than {nameof(Width)}");
+            if (yStart > Height)
+                throw new ArgumentOutOfRangeException(nameof(yStart), $"{nameof(yStart)} cannot be bigger than {nameof(Height)}");
+            if (xEnd > Width)
+                throw new ArgumentOutOfRangeException(nameof(xEnd), $"{nameof(xEnd)} cannot be bigger than {nameof(Width)}");
+            if (yEnd > Height)
+                throw new ArgumentOutOfRangeException(nameof(yEnd), $"{nameof(yEnd)} cannot be bigger than {nameof(Height)}");
+
+            if (filled ) {
+                uint Ypoint;
+                for(Ypoint = yStart; Ypoint < yEnd; Ypoint++) {
+                    DrawLine(xStart, Ypoint, xEnd, Ypoint, color , LineStyle.LINE_STYLE_SOLID, dotSize);
+                }
+            } else {
+                DrawLine(xStart, yStart, xEnd, yStart, color , LineStyle.LINE_STYLE_SOLID, dotSize);
+                DrawLine(xStart, yStart, xStart, yEnd, color , LineStyle.LINE_STYLE_SOLID, dotSize);
+                DrawLine(xEnd, yEnd, xEnd, yStart, color , LineStyle.LINE_STYLE_SOLID, dotSize);
+                DrawLine(xEnd, yEnd, xStart, yEnd, color , LineStyle.LINE_STYLE_SOLID, dotSize);
+            }
+        }
+
         public void Clear(Color color)
         {
             for (int Y = 0; Y < _heightByte; Y++)
