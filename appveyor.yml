@@ -1,0 +1,19 @@
+version: '1.0.{build}'
+image: Visual Studio 2017
+branches:
+  only:
+  - master
+init:
+  - cmd: git config --global core.autocrlf true
+before_build:
+  - cmd: dotnet --version
+  - cmd: dotnet restore ./src/EPaperHatCore/EPaperHatCore.csproj --verbosity m
+
+build_script:
+  - cmd: dotnet build ./src/EPaperHatCore/EPaperHatCore.csproj
+
+test_script:
+  - cmd: dotnet restore ./tests/EPaperHatCore.Tests/EPaperHatCore.Tests.csproj --verbosity m
+  - cmd: cd tests/EPaperHatCore.Tests
+  - cmd: dotnet test
+deploy: off
