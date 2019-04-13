@@ -8,9 +8,9 @@ This library provides a simple way to access e-Paper display on the Raspberry Pi
 
 ## Installation
 
-EPaperHatCore is available on [MyGet](https://www.myget.org/F/epaperhatcore/api/v3/index.json)
+EPaperHatCore is available on [MyGet](https://www.myget.org/feed/epaperhatcore/package/nuget/EPaperHatCore)
 
-[![MyGet](https://img.shields.io/myget/epaperhatcore/v/EPaperHatCore.svg)](https://www.myget.org/feed/epaperhatcore/package/nuget/EPaperHatCore) 
+[![MyGet](https://img.shields.io/myget/epaperhatcore/v/EPaperHatCore.svg??style=flat-square&logo=appveyor)](https://www.myget.org/feed/epaperhatcore/package/nuget/EPaperHatCore) 
 
 ### Package manager
 ```bash
