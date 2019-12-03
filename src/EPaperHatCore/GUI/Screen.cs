@@ -1,5 +1,6 @@
 using System;
 using static BetaSoft.EPaperHatCore.GUI.Enums;
+using BetaSoft.EPaperHatCore.GUI.Fonts;
 
 namespace BetaSoft.EPaperHatCore.GUI
 {
@@ -106,7 +107,7 @@ namespace BetaSoft.EPaperHatCore.GUI
         }
 
         public void DrawCharachter(uint xPoint, uint yPoint, char asciiChar,
-            Font font, Color backgroundColor, Color foregroundColor)
+            IFont font, Color backgroundColor, Color foregroundColor)
         {
             if (xPoint > Width)
                 throw new ArgumentOutOfRangeException(nameof(xPoint), $"{nameof(xPoint)} cannot be bigger than {nameof(Width)}");
@@ -151,7 +152,7 @@ namespace BetaSoft.EPaperHatCore.GUI
         }
 
         public void DrawString(uint xStart, uint yStart, string text,
-            Font font, Color backgroundColor, Color foregroundColor)
+            IFont font, Color backgroundColor, Color foregroundColor)
         {
             uint xPoint = xStart;
             uint yPoint = yStart;
