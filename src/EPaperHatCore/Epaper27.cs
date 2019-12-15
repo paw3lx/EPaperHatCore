@@ -1,33 +1,19 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using BetaSoft.EPaperHatCore.GUI;
 using BetaSoft.EPaperHatCore.IO;
-using Unosquare.RaspberryIO;
-using Unosquare.RaspberryIO.Abstractions;
 
 namespace BetaSoft.EPaperHatCore
 {
-    public class Epaper
+    public class Epaper27 : EpaperBase
     {
-        private readonly IEpaperConnection _ePaperConnection;
-        private readonly Connections _connections;
-        public Epaper(int screenWidth, int screenHeight, IHardwareSpecification specification = null)
+        public Epaper27(int screenWidth, int screenHeight, IHardwareSpecification specification = null)
+            : base(screenWidth, screenHeight, specification)
         {
-            if (screenWidth <= 0 || screenHeight <= 0)
-            {
-                throw new ArgumentException("Width and/or height cannot be less or equal zero");
-            }
-            ScreenWidth = screenWidth;
-            ScreenHeight = screenHeight;
 
-            _connections = new Connections(specification ?? new DefaultSpecification());
-            _ePaperConnection = new EPaperConnection(_connections);
         }
 
-        public int ScreenWidth { get; }
-        public int ScreenHeight { get; }
-        public void Initialize()
+        public override void Initialize()
         {
             _connections.Initialize();
             Reset();
@@ -118,7 +104,7 @@ namespace BetaSoft.EPaperHatCore
             } 
         }
 
-        private void Reset()
+        public override void Reset()
         {
             _connections.ResetPin.Write(true);
             Thread.Sleep(200);
@@ -127,7 +113,7 @@ namespace BetaSoft.EPaperHatCore
             _connections.ResetPin.Write(true);
         }
 
-        private void WaitUntilIdle()
+        public override void WaitUntilIdle()
         {
             Console.WriteLine("e-Paper busy");
             while(_connections.BusyPin.Read() == false)
@@ -137,7 +123,7 @@ namespace BetaSoft.EPaperHatCore
             Console.WriteLine("e-Paper busy release");
         }
 
-        public void ClearScreen()
+        public override void ClearScreen()
         {    
             int Width, Height;
             Width = (ScreenWidth % 8 == 0)? (ScreenWidth / 8 ): (ScreenHeight / 8 + 1);
@@ -163,8 +149,14 @@ namespace BetaSoft.EPaperHatCore
             WaitUntilIdle();
         }
 
-        public void DisplayScreens(Screen blackScreen, Screen redScreen)
+        public override void DisplayScreens(params Screen[] screens)
         {
+            if (screens.Length != 2)
+                throw new ArgumentNullException(nameof(screens));
+
+            var blackScreen = screens[0];
+            var redScreen = screens[1];
+            
             if (blackScreen?.Image == null)
                 throw new ArgumentNullException(nameof(blackScreen));
             if (redScreen?.Image == null)
@@ -192,7 +184,7 @@ namespace BetaSoft.EPaperHatCore
             _ePaperConnection.SendData(HardwareCodes.DATA_STOP);
         }
 
-        public void Sleep()
+        public override void Sleep()
         {
             _ePaperConnection.SendCommand(0X50);
             _ePaperConnection.SendData(0xf7);

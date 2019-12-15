@@ -4,7 +4,7 @@ using Unosquare.RaspberryIO.Abstractions;
 
 namespace BetaSoft.EPaperHatCore
 {
-    internal class Connections
+    public class Connections
     {
         private readonly IHardwareSpecification _specification;
         public IGpioPin ResetPin { get; private set; }
