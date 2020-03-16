@@ -20,7 +20,7 @@ namespace BetaSoft.EPaperHatCore.IO
             {
                 _connection.DcPin.Write(GpioPinValue.Low);
                 _connection.CsPin.Write(GpioPinValue.Low);
-                _connection.Channel.SendReceive(BitConverter.GetBytes(command));
+                _connection.Channel.SendReceive(ToBytes(command));
                 _connection.CsPin.Write(GpioPinValue.High);
             }
         }
@@ -31,9 +31,15 @@ namespace BetaSoft.EPaperHatCore.IO
             {
                 _connection.DcPin.Write(GpioPinValue.High);
                 _connection.CsPin.Write(GpioPinValue.Low);
-                _connection.Channel.SendReceive(BitConverter.GetBytes(data));
+                _connection.Channel.SendReceive(ToBytes(data));
                 _connection.CsPin.Write(GpioPinValue.High);
             }
+        }
+
+        private byte[] ToBytes(int intValue)
+        {
+            byte b = (byte)intValue;
+            return new byte[1]{ b };
         }
     }
 }
