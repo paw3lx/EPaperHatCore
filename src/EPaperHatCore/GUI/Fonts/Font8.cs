@@ -1,21 +1,20 @@
 using System.Linq;
 
-namespace BetaSoft.EPaperHatCore.GUI.Fonts
+namespace EPaperHatCore.GUI.Fonts;
+public class Font8 : IFont
 {
-    public class Font8 : IFont
+    public uint Width { get; }
+
+    public uint Height { get; }
+
+    public char[] Table { get; }
+
+    public Font8()
     {
-        public uint Width { get; }
-
-        public uint Height { get;}
-
-        public char[] Table { get; }
-
-        public Font8()
+        Width = 5;
+        Height = 8;
+        Table = new int[]
         {
-            Width = 5;
-            Height = 8;
-            Table  = new int[]
-			{
 				// @0 ' ' (5 pixels wide)
 				0x00, //      
 				0x00, //      
@@ -965,7 +964,6 @@ namespace BetaSoft.EPaperHatCore.GUI.Fonts
 				0x00, //      
 				0x00, //      
 				0x00, //             
-			}.Select(s => (char)s).ToArray();
-        }
+        }.Select(s => (char)s).ToArray();
     }
 }

@@ -1,43 +1,56 @@
-using BetaSoft.EPaperHatCore.IO;
-using Unosquare.RaspberryIO;
-using Unosquare.RaspberryIO.Abstractions;
+using System;
+using System.Device.Gpio;
+using System.Device.Spi;
+using EPaperHatCore.IO;
 
-namespace BetaSoft.EPaperHatCore
+namespace EPaperHatCore;
+public class Connections : IDisposable
 {
-    public class Connections
+    private readonly IHardwareSpecification _specification;
+    public int ResetPin { get; private set; }
+    public int DcPin { get; private set; }
+    public int CsPin { get; private set; }
+    public int BusyPin { get; private set; }
+    public SpiDevice SpiDevice { get; private set; }
+    public GpioController GpioController { get; private set; }
+    private static readonly object _syncLock = new object();
+
+    public Connections(IHardwareSpecification specification)
     {
-        private readonly IHardwareSpecification _specification;
-        public IGpioPin ResetPin { get; private set; }
-        public IGpioPin DcPin { get; private set; } 
-        public IGpioPin CsPin { get; private set; }
-        public IGpioPin BusyPin { get; private set; }
-        public ISpiChannel Channel { get; private set; }
-        private static readonly object _syncLock = new object();
+        _specification = specification;
+    }
 
-        public Connections(IHardwareSpecification specification)
+    public void Initialize()
+    {
+        lock (_syncLock)
         {
-            _specification = specification;
-        }
+            GpioController = new GpioController();
 
-        public void Initialize()
-        {
-            lock(_syncLock)
+            ResetPin = _specification.RST_PIN;
+            GpioController.OpenPin(ResetPin, PinMode.Output);
+
+            DcPin = _specification.DC_PIN;
+            GpioController.OpenPin(DcPin, PinMode.Output);
+
+            CsPin = _specification.CS_PIN;
+            GpioController.OpenPin(CsPin, PinMode.Output);
+
+            BusyPin = _specification.BUSY_PIN;
+            GpioController.OpenPin(BusyPin, PinMode.Input);
+
+            var spiSettings = new SpiConnectionSettings(0, CsPin)
             {
-                ResetPin = Pi.Gpio[_specification.RST_PIN];
-                ResetPin.PinMode = GpioPinDriveMode.Output;
-
-                DcPin = Pi.Gpio[_specification.DC_PIN];
-                DcPin.PinMode = GpioPinDriveMode.Output;
-
-                CsPin = Pi.Gpio[_specification.CS_PIN];
-                CsPin.PinMode = GpioPinDriveMode.Output;
-
-                BusyPin = Pi.Gpio[_specification.BUSY_PIN];
-                BusyPin.PinMode = GpioPinDriveMode.Input;
-
-                Pi.Spi.Channel0Frequency = _specification.Channel0Frequency;
-                Channel = Pi.Spi.Channel0;
-            }
+                ClockFrequency = _specification.Channel0Frequency,
+                Mode = SpiMode.Mode0
+            };
+            SpiDevice = SpiDevice.Create(spiSettings);
         }
+    }
+
+    public void Dispose()
+    {
+        SpiDevice?.Dispose();
+        GpioController?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

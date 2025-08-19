@@ -1,28 +1,24 @@
-using Unosquare.RaspberryIO;
-using Unosquare.RaspberryIO.Abstractions;
-
-namespace BetaSoft.EPaperHatCore
+namespace EPaperHatCore;
+internal static class HardwareCodes
 {
-    internal static class HardwareCodes
-    {   
-        public const int POWER_ON = 0x04;
-        public const int PANEL_SETTING = 0x00;
-        public const int PLL_CONTROL = 0x30;
-        public const int POWER_SETTING = 0x01;
-        public const int BOOSTER_SOFT_START = 0x06;
-        public const int VCM_DC_SETTING_REGISTER = 0x82;
-        public const int VCOM_AND_DATA_INTERVAL_SETTING = 0x50;
-        public const int PARTIAL_DISPLAY_REFRESH = 0x16;
-        public const int LUT_FOR_VCOM = 0x20;
-        public const int LUT_WHITE_TO_WHITE = 0x21;
-        public const int LUT_BLACK_TO_WHITE = 0x22;
-        public const int LUT_WHITE_TO_BLACK = 0x23;
-        public const int LUT_BLACK_TO_BLACK = 0x24;
-        public const int DATA_START_TRANSMISSION_1 = 0x10;
-        public const int DATA_STOP = 0x11;
-        public const int DATA_START_TRANSMISSION_2 = 0x13;
-        public const int DISPLAY_REFRESH = 0x12;
-        public static int[] lut_vcom_dc = new int[]{
+    public const int POWER_ON = 0x04;
+    public const int PANEL_SETTING = 0x00;
+    public const int PLL_CONTROL = 0x30;
+    public const int POWER_SETTING = 0x01;
+    public const int BOOSTER_SOFT_START = 0x06;
+    public const int VCM_DC_SETTING_REGISTER = 0x82;
+    public const int VCOM_AND_DATA_INTERVAL_SETTING = 0x50;
+    public const int PARTIAL_DISPLAY_REFRESH = 0x16;
+    public const int LUT_FOR_VCOM = 0x20;
+    public const int LUT_WHITE_TO_WHITE = 0x21;
+    public const int LUT_BLACK_TO_WHITE = 0x22;
+    public const int LUT_WHITE_TO_BLACK = 0x23;
+    public const int LUT_BLACK_TO_BLACK = 0x24;
+    public const int DATA_START_TRANSMISSION_1 = 0x10;
+    public const int DATA_STOP = 0x11;
+    public const int DATA_START_TRANSMISSION_2 = 0x13;
+    public const int DISPLAY_REFRESH = 0x12;
+    public static int[] lut_vcom_dc = new int[]{
             0x00, 0x00,
             0x00, 0x1A, 0x1A, 0x00, 0x00, 0x01,
             0x00, 0x0A, 0x0A, 0x00, 0x00, 0x08,
@@ -33,8 +29,8 @@ namespace BetaSoft.EPaperHatCore
             0x00, 0x23, 0x00, 0x00, 0x00, 0x01
         };
 
-        //R21H
-        public static int[] lut_ww = new int[]{
+    //R21H
+    public static int[] lut_ww = new int[]{
             0x90, 0x1A, 0x1A, 0x00, 0x00, 0x01,
             0x40, 0x0A, 0x0A, 0x00, 0x00, 0x08,
             0x84, 0x0E, 0x01, 0x0E, 0x01, 0x10,
@@ -44,8 +40,8 @@ namespace BetaSoft.EPaperHatCore
             0x00, 0x23, 0x00, 0x00, 0x00, 0x01
         };
 
-        //R22H r
-        public static int[] lut_bw = new int[]{
+    //R22H r
+    public static int[] lut_bw = new int[]{
             0xA0, 0x1A, 0x1A, 0x00, 0x00, 0x01,
             0x00, 0x0A, 0x0A, 0x00, 0x00, 0x08,
             0x84, 0x0E, 0x01, 0x0E, 0x01, 0x10,
@@ -55,8 +51,8 @@ namespace BetaSoft.EPaperHatCore
             0xC0, 0x23, 0x00, 0x00, 0x00, 0x01
         };
 
-        //R23H w
-        public static int[] lut_bb = new int[] {
+    //R23H w
+    public static int[] lut_bb = new int[] {
             0x90, 0x1A, 0x1A, 0x00, 0x00, 0x01,
             0x40, 0x0A, 0x0A, 0x00, 0x00, 0x08,
             0x84, 0x0E, 0x01, 0x0E, 0x01, 0x10,
@@ -66,8 +62,8 @@ namespace BetaSoft.EPaperHatCore
             0x00, 0x23, 0x00, 0x00, 0x00, 0x01
         };
 
-        //R24H b
-        public static int[] lut_wb = new int[]{
+    //R24H b
+    public static int[] lut_wb = new int[]{
             0x90, 0x1A, 0x1A, 0x00, 0x00, 0x01,
             0x20, 0x0A, 0x0A, 0x00, 0x00, 0x08,
             0x84, 0x0E, 0x01, 0x0E, 0x01, 0x10,
@@ -76,5 +72,4 @@ namespace BetaSoft.EPaperHatCore
             0x00, 0x03, 0x0E, 0x00, 0x00, 0x0A,
             0x00, 0x23, 0x00, 0x00, 0x00, 0x01
         };
-    }
 }

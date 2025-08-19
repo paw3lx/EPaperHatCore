@@ -1,21 +1,20 @@
 using System.Linq;
 
-namespace BetaSoft.EPaperHatCore.GUI.Fonts
+namespace EPaperHatCore.GUI.Fonts;
+public class Font12 : IFont
 {
-    public class Font12 : IFont
+    public uint Width { get; }
+
+    public uint Height { get; }
+
+    public char[] Table { get; }
+
+    public Font12()
     {
-        public uint Width { get; }
-
-        public uint Height { get;}
-
-        public char[] Table { get; }
-
-        public Font12()
+        Width = 7;
+        Height = 12;
+        Table = new int[]
         {
-            Width = 7;
-            Height = 12;
-            Table  = new int[]
-			{
 				// @0 ' ' (7 pixels wide)
 				0x00, //        
 				0x00, //        
@@ -1345,7 +1344,6 @@ namespace BetaSoft.EPaperHatCore.GUI.Fonts
 				0x00, //        
 				0x00, //        
 				0x00, //              
-			}.Select(s => (char)s).ToArray();
-        }
+        }.Select(s => (char)s).ToArray();
     }
 }
