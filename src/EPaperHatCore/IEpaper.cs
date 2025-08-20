@@ -1,7 +1,5 @@
-namespace BetaSoft.EPaperHatCore
-{
-    public interface IEpaper
-    {
-    }
+namespace EPaperHatCore;
 
+public interface IEpaper
+{
 }

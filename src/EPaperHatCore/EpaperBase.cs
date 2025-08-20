@@ -1,40 +1,33 @@
 using System;
-using System.IO;
-using System.Threading;
-using BetaSoft.EPaperHatCore.GUI;
-using BetaSoft.EPaperHatCore.IO;
-using Unosquare.RaspberryIO;
-using Unosquare.RaspberryIO.Abstractions;
+using EPaperHatCore.GUI;
+using EPaperHatCore.IO;
 
-namespace BetaSoft.EPaperHatCore
+namespace EPaperHatCore;
+public abstract class EpaperBase : IEpaper
 {
-    public abstract class EpaperBase : IEpaper
+    public int ScreenWidth { get; }
+    public int ScreenHeight { get; }
+
+    protected readonly IEpaperConnection _ePaperConnection;
+    protected readonly Connections _connections;
+
+    public EpaperBase(int screenWidth, int screenHeight, IHardwareSpecification specification = null)
     {
-        public int ScreenWidth { get; }
-        public int ScreenHeight { get; }
-
-        protected readonly IEpaperConnection _ePaperConnection;
-        protected readonly Connections _connections;
-
-        public EpaperBase(int screenWidth, int screenHeight, IHardwareSpecification specification = null)
+        if (screenWidth <= 0 || screenHeight <= 0)
         {
-            if (screenWidth <= 0 || screenHeight <= 0)
-            {
-                throw new ArgumentException("Width and/or height cannot be less or equal zero");
-            }
-            ScreenWidth = screenWidth;
-            ScreenHeight = screenHeight;
-
-            _connections = new Connections(specification ?? new DefaultSpecification());
-            _ePaperConnection = new EPaperConnection(_connections);
+            throw new ArgumentException("Width and/or height cannot be less or equal zero");
         }
+        ScreenWidth = screenWidth;
+        ScreenHeight = screenHeight;
 
-        public abstract void Initialize();
-        public abstract void ClearScreen();
-        public abstract void WaitUntilIdle();
-        public abstract void DisplayScreens(params Screen[] screens);
-        public abstract void Sleep();
-        public abstract void Reset();
+        _connections = new Connections(specification ?? new DefaultSpecification());
+        _ePaperConnection = new EPaperConnection(_connections);
     }
 
+    public abstract void Initialize();
+    public abstract void ClearScreen();
+    public abstract void WaitUntilIdle();
+    public abstract void DisplayScreens(params Screen[] screens);
+    public abstract void Sleep();
+    public abstract void Reset();
 }

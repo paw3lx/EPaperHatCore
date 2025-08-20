@@ -1,9 +1,8 @@
-namespace BetaSoft.EPaperHatCore.GUI.Fonts
+namespace EPaperHatCore.GUI.Fonts;
+
+public interface IFont
 {
-    public interface IFont
-    {
-        uint Width { get; }
-        uint Height { get; }
-        char[] Table { get; }
-    }
+    uint Width { get; }
+    uint Height { get; }
+    char[] Table { get; }
 }

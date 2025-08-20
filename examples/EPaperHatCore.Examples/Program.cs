@@ -1,21 +1,14 @@
 ﻿using System;
-using BetaSoft.EPaperHatCore;
-using BetaSoft.EPaperHatCore.GUI;
-using BetaSoft.EPaperHatCore.GUI.Fonts;
-using Unosquare.RaspberryIO;
-using Unosquare.RaspberryIO.Abstractions;
-using Unosquare.WiringPi;
-using Unosquare.WiringPi.Native;
-using static BetaSoft.EPaperHatCore.GUI.Enums;
+using EPaperHatCore;
+using EPaperHatCore.GUI;
+using EPaperHatCore.GUI.Fonts;
+using static EPaperHatCore.GUI.Enums;
 
-namespace EPaperHatCore.Examples
-{
+namespace EPaperHatCore.Examples;
     class Program
     {
         static void Main(string[] args)
         {
-            Pi.Init<BootstrapWiringPi>();
-            
             //initialize ePaper display
             var ePaper = new Epaper27(176, 264);
             ePaper.Initialize();
@@ -33,4 +26,3 @@ namespace EPaperHatCore.Examples
             ePaper.DisplayScreens(blackScreen, redScreen);
         }
     }
-}

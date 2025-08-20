@@ -1,8 +1,7 @@
-namespace BetaSoft.EPaperHatCore.IO
+namespace EPaperHatCore.IO;
+
+public interface IEpaperConnection
 {
-    public interface IEpaperConnection
-    {
-        void SendCommand(int command);
-        void SendData(int data);
-    }
+    void SendCommand(int command);
+    void SendData(int data);
 }
