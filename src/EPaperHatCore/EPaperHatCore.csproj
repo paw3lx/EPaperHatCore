@@ -4,7 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>EPaperHatCore</AssemblyName>
     <PackageId>EPaperHatCore</PackageId>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.3.0</VersionPrefix>
+    <Authors>Pawel Skaruz</Authors>
+    <Description>A .NET 8 library for controlling E-Paper HAT displays on Raspberry Pi</Description>
+    <PackageProjectUrl>https://github.com/paw3lx/EPaperHatCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/paw3lx/EPaperHatCore</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
     <ItemGroup>
     <PackageReference Include="System.Device.Gpio" Version="3.1.0" />
